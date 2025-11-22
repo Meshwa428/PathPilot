@@ -2,7 +2,7 @@
 
 import Navbar from "@/components/shared/Navbar";
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, LineChart, Users, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Bot, LineChart, Users, CheckCircle2, GraduationCap, MessageCircle } from "lucide-react"; // Added icons
 import Link from "next/link";
 
 export default function Home() {
@@ -11,8 +11,7 @@ export default function Home() {
       <Navbar />
 
       {/* HERO SECTION */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        {/* Background Decorative Blobs */}
+      <section className="relative pt-28 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full z-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl mix-blend-multiply animate-blob" />
           <div className="absolute top-20 right-10 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl mix-blend-multiply animate-blob animation-delay-2000" />
@@ -74,7 +73,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STATS SECTION (Social Proof) */}
+      {/* STATS SECTION (Removed ID 'mentorship' from here) */}
       <section className="border-y border-slate-100 bg-slate-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -93,8 +92,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FEATURES GRID (Problem Solvers) */}
-      <section id="features" className="py-24 bg-white">
+      {/* FEATURES GRID */}
+      <section id="features" className="scroll-mt-24 py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">
@@ -113,7 +112,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">AI Career Assistant</h3>
               <p className="text-slate-600 leading-relaxed">
-                Don&apos;t know where to start? Our AI analyzes your resume and suggests tailored roadmaps specific to your branch—be it Engineering or Pharmacy.
+                Don&apos;t know where to start? Our AI analyzes your resume and suggests tailored roadmaps specific to your branch.
               </p>
             </div>
 
@@ -124,7 +123,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Real-Time Tracking</h3>
               <p className="text-slate-600 leading-relaxed">
-                No more guessing. Track your application status from &quot;Applied&quot; to &quot;Offer Letter&quot; in a transparent, Trello-style pipeline.
+                No more guessing. Track your application status from &quot;Applied&quot; to &quot;Offer Letter&quot; in a transparent pipeline.
               </p>
             </div>
 
@@ -142,8 +141,75 @@ export default function Home() {
         </div>
       </section>
 
+      {/* --- NEW DEDICATED MENTORSHIP SECTION --- */}
+      <section id="mentorship" className="scroll-mt-24 py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-bold uppercase tracking-wider mb-6">
+                Alumni Network
+              </div>
+              <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-6">
+                Learn from those who <br />
+                <span className="text-orange-600">Walked the Path</span>
+              </h2>
+              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                PathPilot automatically matches you with alumni from your branch who are now working in your target industry. Schedule mock interviews, ask for referrals, and get the inside scoop.
+              </p>
+              
+              <div className="space-y-4">
+                {[
+                  "1-on-1 Mock Interviews",
+                  "Resume Reviews by Industry Experts",
+                  "Referral Requests for Top Companies"
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <span className="font-medium text-slate-800">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Visual Graphic for Mentors */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-tr from-orange-200 to-purple-200 rounded-3xl blur-2xl opacity-50" />
+              <div className="relative bg-white rounded-3xl p-8 shadow-xl border border-slate-100">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-bold text-slate-900">Top Mentors</h3>
+                  <span className="text-blue-600 text-sm font-medium cursor-pointer">View All</span>
+                </div>
+                
+                <div className="space-y-4">
+                  {[
+                    { name: "Aditya R.", role: "SDE II at Amazon", school: "CSE '21" },
+                    { name: "Priya M.", role: "Analyst at Deloitte", school: "MBA '22" },
+                    { name: "Rahul K.", role: "Frontend at Swiggy", school: "IT '23" },
+                  ].map((mentor, i) => (
+                    <div key={i} className="flex items-center gap-4 p-3 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer">
+                      <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-bold">
+                        {mentor.name[0]}
+                      </div>
+                      <div>
+                        <div className="font-bold text-slate-900 text-sm">{mentor.name}</div>
+                        <div className="text-xs text-slate-500">{mentor.role}</div>
+                      </div>
+                      <div className="ml-auto">
+                        <MessageCircle className="w-5 h-5 text-slate-400 hover:text-blue-600" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="py-24 bg-slate-900 text-white overflow-hidden">
+      <section id="how-it-works" className="scroll-mt-24 py-24 bg-slate-900 text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -187,46 +253,34 @@ export default function Home() {
 
                 {/* Job Cards UI */}
                 <div className="space-y-4">
-                  {/* Item 1: Offer Received */}
+                  {/* Item 1 */}
                   <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-700/50 border border-slate-600/50">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
-                      A
-                    </div>
+                    <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">A</div>
                     <div className="flex-1">
                       <div className="h-2.5 w-24 bg-slate-400 rounded-full mb-2"></div>
                       <div className="h-2 w-16 bg-slate-600 rounded-full"></div>
                     </div>
-                    <div className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold">
-                      Offer
-                    </div>
+                    <div className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold">Offer</div>
                   </div>
 
-                  {/* Item 2: Interview Scheduled */}
+                  {/* Item 2 */}
                   <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-700/30 border border-slate-600/30">
-                    <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center text-white font-bold">
-                      T
-                    </div>
+                    <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center text-white font-bold">T</div>
                     <div className="flex-1">
                       <div className="h-2.5 w-32 bg-slate-500 rounded-full mb-2"></div>
                       <div className="h-2 w-20 bg-slate-600 rounded-full"></div>
                     </div>
-                    <div className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold">
-                      Interview
-                    </div>
+                    <div className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold">Interview</div>
                   </div>
 
-                  {/* Item 3: Applied */}
+                  {/* Item 3 */}
                   <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-700/30 border border-slate-600/30 opacity-60">
-                    <div className="w-10 h-10 rounded-lg bg-orange-600 flex items-center justify-center text-white font-bold">
-                      G
-                    </div>
+                    <div className="w-10 h-10 rounded-lg bg-orange-600 flex items-center justify-center text-white font-bold">G</div>
                     <div className="flex-1">
                       <div className="h-2.5 w-28 bg-slate-500 rounded-full mb-2"></div>
                       <div className="h-2 w-12 bg-slate-600 rounded-full"></div>
                     </div>
-                    <div className="px-3 py-1 rounded-full bg-slate-500/20 text-slate-400 text-xs font-bold">
-                      Applied
-                    </div>
+                    <div className="px-3 py-1 rounded-full bg-slate-500/20 text-slate-400 text-xs font-bold">Applied</div>
                   </div>
                 </div>
               </div>
@@ -279,7 +333,6 @@ export default function Home() {
             © 2024 PathPilot. All rights reserved. Built for the Hackathon.
           </div>
           <div className="flex gap-6">
-             {/* Social placeholders */}
              <div className="w-8 h-8 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors cursor-pointer"></div>
              <div className="w-8 h-8 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors cursor-pointer"></div>
           </div>

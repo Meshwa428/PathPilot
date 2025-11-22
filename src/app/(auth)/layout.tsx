@@ -51,7 +51,7 @@ export default function AuthLayout({
 
       {/* --- Footer --- */}
       <div className="absolute bottom-6 text-slate-400 text-xs z-10 text-center w-full font-medium">
-        © 2024 ITMBU Placement Cell. Secured by Clerk.
+        © 2024 PathPilot. Secured by Clerk.
       </div>
     </div>
   );
