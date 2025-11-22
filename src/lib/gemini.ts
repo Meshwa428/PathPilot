@@ -12,7 +12,14 @@ export async function generateEmbedding(text: string) {
       model: 'text-embedding-004', 
       contents: text,
     });
-    return response.embedding?.values || response.embedding;
+
+    // ✅ FIXED: The new SDK uses 'embeddings' (plural) which is an array.
+    // Since we sent 1 text chunk, we take the first result.
+    if (response.embeddings && response.embeddings.length > 0) {
+        return response.embeddings[0].values;
+    }
+
+    throw new Error("No embeddings generated.");
   } catch (error) {
     console.error("Embedding Error:", error);
     throw error;
@@ -27,7 +34,6 @@ export async function generateText(prompt: string, systemInstruction?: string) {
       contents: prompt,
       config: { systemInstruction }
     });
-    // ✅ FIXED: .text is a property
     return response.text || "";
   } catch (error) {
     console.error("Generation Error:", error);
@@ -38,7 +44,6 @@ export async function generateText(prompt: string, systemInstruction?: string) {
 // 3. Parse Resume PDF directly using Gemini 2.0 Flash
 export async function analyzeResumePDF(fileBuffer: Buffer) {
   try {
-    // Convert Buffer to Base64 for inline transmission
     const base64Data = fileBuffer.toString("base64");
 
     const response = await ai.models.generateContent({
@@ -72,9 +77,7 @@ export async function analyzeResumePDF(fileBuffer: Buffer) {
       }
     });
 
-    // ✅ FIXED: Removed parentheses ()
     const text = response.text;
-    
     if (!text) throw new Error("Empty response from Gemini");
     
     return JSON.parse(text);

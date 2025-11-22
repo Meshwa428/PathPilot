@@ -2,8 +2,6 @@
 
 import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 import { auth, currentUser } from "@clerk/nextjs/server";
-// REMOVE: import { redirect } from "next/navigation"; 
-import { revalidatePath } from "next/cache";
 
 export async function createUserProfile(formData: FormData) {
   const { userId } = await auth();
@@ -12,7 +10,7 @@ export async function createUserProfile(formData: FormData) {
   if (!userId || !user) throw new Error("Unauthorized");
 
   const role = formData.get("role") as string;
-  const name = `${user.firstName} ${user.lastName}`;
+  const name = `${user.firstName} ${user.lastName || ""}`.trim();
   const email = user.emailAddresses[0].emailAddress;
 
   // --- RECRUITER ---
@@ -39,13 +37,12 @@ export async function createUserProfile(formData: FormData) {
       }, { onConflict: 'clerk_id' });
 
     if (recruiterError) throw new Error("Failed to create recruiter profile");
-    
-    // ✅ CHANGED: Return success instead of redirecting
     return { success: true, role: 'recruiter' };
   }
 
   // --- STUDENT ---
   if (role === 'student') {
+    // ... (Keep your existing Student logic here) ...
     const collegeId = formData.get("collegeId");
     const branch = formData.get("branch");
     const year = parseInt(formData.get("year") as string);
@@ -73,37 +70,44 @@ export async function createUserProfile(formData: FormData) {
       }, { onConflict: 'clerk_id' });
 
     if (error) throw new Error("Failed to save student profile");
-
-    // ✅ CHANGED: Return success instead of redirecting
     return { success: true, role: 'student' };
   }
 
+  // --- ✅ FIX: ADMIN ---
   if (role === 'admin') {
+     const { error } = await supabase
+       .from('admins')
+       .upsert({
+         clerk_id: userId,
+         name: name,
+         email: email
+       }, { onConflict: 'clerk_id' });
+
+     if (error) {
+        console.error("Admin creation error:", error);
+        throw new Error("Failed to create admin");
+     }
      return { success: true, role: 'admin' };
   }
 }
 
-// ... (Keep getUserById and updateStudentProfile as they are) ...
 export async function getUserById(clerkId: string) {
-  const { data: student } = await supabase
-    .from('students')
-    .select('*')
-    .eq('clerk_id', clerkId)
-    .single();
+  // 1. Try Student
+  const { data: student } = await supabase.from('students').select('*').eq('clerk_id', clerkId).single();
+  if (student) return { ...student, type: 'student', role: 'student' };
 
-  if (student) return { ...student, type: 'student' };
+  // 2. Try Recruiter
+  const { data: recruiter } = await supabase.from('recruiters').select('*, organizations(*)').eq('clerk_id', clerkId).single();
+  if (recruiter) return { ...recruiter, type: 'recruiter', role: 'recruiter' };
 
-  const { data: recruiter } = await supabase
-    .from('recruiters')
-    .select('*, organizations(*)') 
-    .eq('clerk_id', clerkId)
-    .single();
-
-  if (recruiter) return { ...recruiter, type: 'recruiter' };
+  // 3. Try Admin (✅ ADDED THIS CHECK)
+  const { data: admin } = await supabase.from('admins').select('*').eq('clerk_id', clerkId).single();
+  if (admin) return { ...admin, type: 'admin', role: 'admin' };
 
   return null;
 }
 
+// ... (Keep updateStudentProfile as is)
 export async function updateStudentProfile(formData: FormData) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -123,6 +127,4 @@ export async function updateStudentProfile(formData: FormData) {
     .eq('clerk_id', userId);
 
   if (error) throw new Error("Failed to update profile");
-
-  revalidatePath('/dashboard');
 }
