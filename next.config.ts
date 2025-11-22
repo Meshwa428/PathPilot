@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // This hides the build activity indicator in the bottom corner
   devIndicators: false,
+  
+  // Add this to allow ngrok
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["localhost:3000", "*.ngrok-free.app"],
+    },
+  },
 };
 
 export default nextConfig;

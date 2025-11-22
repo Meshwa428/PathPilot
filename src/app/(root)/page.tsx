@@ -2,7 +2,9 @@
 
 import Navbar from "@/components/shared/Navbar";
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, LineChart, Users, CheckCircle2, GraduationCap, MessageCircle } from "lucide-react"; // Added icons
+// ✅ ADDED: SignedIn, SignedOut, and LayoutDashboard icon
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { ArrowRight, Bot, LineChart, Users, CheckCircle2, MessageCircle, LayoutDashboard } from "lucide-react"; 
 import Link from "next/link";
 
 export default function Home() {
@@ -59,11 +61,24 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <Link href="/sign-up">
-              <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-xl shadow-slate-900/20">
-                Student Login <ArrowRight className="w-4 h-4" />
-              </button>
-            </Link>
+            {/* ✅ CASE 1: USER IS LOGGED IN */}
+            <SignedIn>
+              <Link href="/dashboard">
+                <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-xl shadow-slate-900/20">
+                  Go to Dashboard <LayoutDashboard className="w-4 h-4" />
+                </button>
+              </Link>
+            </SignedIn>
+
+            {/* ✅ CASE 2: USER IS LOGGED OUT */}
+            <SignedOut>
+              <Link href="/sign-in">
+                <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-xl shadow-slate-900/20">
+                  Student Login <ArrowRight className="w-4 h-4" />
+                </button>
+              </Link>
+            </SignedOut>
+
             <Link href="#features">
               <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-slate-700 border border-slate-200 font-semibold hover:bg-slate-50 transition-all">
                 View Features
@@ -73,7 +88,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STATS SECTION (Removed ID 'mentorship' from here) */}
+      {/* ... (Rest of the sections remain exactly the same) ... */}
+      
+      {/* STATS SECTION */}
       <section className="border-y border-slate-100 bg-slate-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -141,7 +158,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- NEW DEDICATED MENTORSHIP SECTION --- */}
+      {/* MENTORSHIP */}
       <section id="mentorship" className="scroll-mt-24 py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -173,7 +190,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Visual Graphic for Mentors */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-orange-200 to-purple-200 rounded-3xl blur-2xl opacity-50" />
               <div className="relative bg-white rounded-3xl p-8 shadow-xl border border-slate-100">
@@ -239,9 +255,7 @@ export default function Home() {
             </div>
 
             <div className="relative">
-              {/* Realistic Dashboard Mockup */}
               <div className="relative rounded-2xl bg-slate-800 border border-slate-700 p-6 shadow-2xl">
-                {/* Window Header */}
                 <div className="flex items-center justify-between border-b border-slate-700 pb-4 mb-6">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -251,9 +265,7 @@ export default function Home() {
                   <div className="text-slate-500 text-xs font-mono">My Applications</div>
                 </div>
 
-                {/* Job Cards UI */}
                 <div className="space-y-4">
-                  {/* Item 1 */}
                   <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-700/50 border border-slate-600/50">
                     <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">A</div>
                     <div className="flex-1">
@@ -263,7 +275,6 @@ export default function Home() {
                     <div className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold">Offer</div>
                   </div>
 
-                  {/* Item 2 */}
                   <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-700/30 border border-slate-600/30">
                     <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center text-white font-bold">T</div>
                     <div className="flex-1">
@@ -273,7 +284,6 @@ export default function Home() {
                     <div className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold">Interview</div>
                   </div>
 
-                  {/* Item 3 */}
                   <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-700/30 border border-slate-600/30 opacity-60">
                     <div className="w-10 h-10 rounded-lg bg-orange-600 flex items-center justify-center text-white font-bold">G</div>
                     <div className="flex-1">
@@ -285,7 +295,6 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* Floating Elements */}
               <motion.div 
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 3 }}
