@@ -1,6 +1,6 @@
 'use server'
 
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 import { auth, currentUser } from "@clerk/nextjs/server";
 // REMOVE: import { redirect } from "next/navigation"; 
 import { revalidatePath } from "next/cache";

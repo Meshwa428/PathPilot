@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from ' @/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { Loader2, UploadCloud } from 'lucide-react';
 
 export default function UploadCertificate({ studentId }: { studentId: string }) {

@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // This hides the build activity indicator in the bottom corner
+  devIndicators: false,
 };
 
 export default nextConfig;
